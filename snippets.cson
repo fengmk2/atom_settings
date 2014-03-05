@@ -15,6 +15,50 @@
 #
 
 '.source.js':
-  'console.log':
-    'prefix': 'log'
-    'body': 'console.log(${1:"crash"});$2'
+  'module copyright fengmk2':
+    'prefix': 'mod'
+    'body': """
+/**!
+ * ${1:project} - ${2:filepath}
+ *
+ * Copyright(c) fengmk2 and other contributors.
+ * MIT Licensed
+ *
+ * Authors:
+ *   fengmk2 <fengmk2@gmail.com> (http://fengmk2.github.com)
+ */
+
+'use strict';
+
+/**
+ * Module dependencies.
+ */
+
+var ${3:modulename1} = require('${4:modulename2}');
+
+$5
+"""
+
+  'module copyright alibaba':
+    'prefix': 'modali'
+    'body': """
+/**!
+* ${1:project} - ${2:filepath}
+*
+* Copyright(c) Alibaba Group Holding Limited.
+* MIT Licensed
+*
+* Authors:
+*   苏千 <suqian.yf@alibaba-inc.com> (http://fengmk2.github.com)
+*/
+
+'use strict';
+
+/**
+* Module dependencies.
+*/
+
+var ${3:modulename1} = require('${4:modulename2}');
+
+$5
+"""
