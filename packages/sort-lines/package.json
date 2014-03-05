@@ -1,0 +1,30 @@
+{
+  "name": "sort-lines",
+  "main": "./lib/sort-lines",
+  "version": "0.2.0",
+  "description": "Sorts your lines. Never gets tired.",
+  "activationEvents": [
+    "sort-lines:sort"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atom/sort-lines"
+  },
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.39.0"
+  },
+  "dependencies": {},
+  "readme": "# Sort Lines Package\n\nSorts your lines in Atom, never gets tired.\n\n![sort-lines-demo](https://f.cloud.github.com/assets/2988/1796891/85e69ff2-6a93-11e3-89ac-31927f604592.gif)\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/atom/sort-lines/issues"
+  },
+  "homepage": "https://github.com/atom/sort-lines",
+  "_id": "sort-lines@0.2.0",
+  "dist": {
+    "shasum": "d20eff47cd148ec0898bfcf2efa161c963b0a4fb"
+  },
+  "_resolved": "/var/folders/16/zt6163qd0b93185_stkvm63h0000gp/T/d-114128-88681-1mgy271/package.tgz",
+  "_from": "/var/folders/16/zt6163qd0b93185_stkvm63h0000gp/T/d-114128-88681-1mgy271/package.tgz"
+}
