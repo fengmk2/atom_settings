@@ -43,20 +43,20 @@ $5
     'prefix': 'modali'
     'body': """
 /**!
-* ${1:project} - ${2:filepath}
-*
-* Copyright(c) Alibaba Group Holding Limited.
-* MIT Licensed
-*
-* Authors:
-*   苏千 <suqian.yf@alibaba-inc.com> (http://fengmk2.github.com)
-*/
+ * ${1:project} - ${2:filepath}
+ *
+ * Copyright(c) Alibaba Group Holding Limited.
+ * MIT Licensed
+ *
+ * Authors:
+ *   苏千 <suqian.yf@alibaba-inc.com> (http://fengmk2.github.com)
+ */
 
 'use strict';
 
 /**
-* Module dependencies.
-*/
+ * Module dependencies.
+ */
 
 var ${3:modulename1} = require('${4:modulename2}');
 
