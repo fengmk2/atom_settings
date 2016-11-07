@@ -1,19 +1,17 @@
 # JSHint
 
-[Atom package](https://atom.io/packages/jshint)
-
 > Validate JavaScript with [JSHint](http://jshint.com)
 
-![](https://f.cloud.github.com/assets/170270/2307241/f0460f66-a2a3-11e3-9382-e8d27ceb0499.png)
+![](https://cloud.githubusercontent.com/assets/170270/3834266/54ad6b1c-1daf-11e4-9c46-98e6e4abab07.png)
 
 
 ## Install
 
-```bash
+```
 $ apm install jshint
 ```
 
-Or Settings ➔ Packages ➔ Search for `jshint` *(install `Jshint`, not `Atom Jshint`)*
+Or Settings → Install → Search for `jshint` *(install `Jshint`, not `Atom Jshint`)*
 
 
 ## Features
@@ -21,9 +19,13 @@ Or Settings ➔ Packages ➔ Search for `jshint` *(install `Jshint`, not `Atom J
 - Validates in realtime.
 - Line and line number turns red on error.
 - Hover over the line number to see the errors.
-- First error is displayed in the statusbar.
+- Displays the error from the current line or the first error in the statusbar; clicking the statusbar message moves the cursor to the error.
 - Reads your `.jshintrc` config and `jshintConfig` in package.json using the same logic as JSHint.
 - Option to only validate on save.
+- Command `Jshint: Lint` to manually lint.
+- Command `Jshint: Go To Next Error` to move the cursor to the next error in the current editor.
+- Command `Jshint: Go To Error` to move the cursor to the error displayed in the statusbar.
+- Supports [React JSX](http://facebook.github.io/react/docs/jsx-in-depth.html). *(must be enabled in Settings)*
 
 
 ## License

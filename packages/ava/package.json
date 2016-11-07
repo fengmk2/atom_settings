@@ -1,0 +1,70 @@
+{
+  "name": "ava",
+  "version": "0.3.0",
+  "description": "Snippets for AVA",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sindresorhus/atom-ava.git"
+  },
+  "private": true,
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com"
+  },
+  "maintainers": [
+    {
+      "name": "Vadim Demedes",
+      "email": "vdemedes@gmail.com",
+      "url": "github.com/vdemedes"
+    },
+    {
+      "name": "James Talmage",
+      "email": "james@talmage.io",
+      "url": "github.com/jamestalmage"
+    }
+  ],
+  "engines": {
+    "atom": ">=1.4.0"
+  },
+  "scripts": {
+    "test": "xo"
+  },
+  "keywords": [
+    "snippets",
+    "test",
+    "runner",
+    "ava",
+    "mocha"
+  ],
+  "devDependencies": {
+    "xo": "*"
+  },
+  "xo": {
+    "esnext": true,
+    "globals": [
+      "atom"
+    ]
+  },
+  "readme": "# AVA\n\n> Snippets for [AVA](https://ava.li)\n\n<img src=\"https://github.com/sindresorhus/atom-ava/raw/master/screenshot.gif\" width=598\">\n\n\n## Install\n\n```\n$ apm install ava\n```\n\nOr, Settings → Install → Search for `ava`\n\n\n## Snippets\n\nIncluded are some [snippets](snippets/ava.json) useful for writing AVA tests.\n\nStart writing a snippet's `prefix` and then press <kbd>Tab ↹</kbd> to expand the snippet.\n\nSnippets are fuzzy matched, so you can for example just write `tnok` to get the `t.notOk()` snippet.\n\n\n## Related\n\n- [Sublime plugin](https://github.com/sindresorhus/sublime-ava)\n- [VS Code plugin](https://github.com/samverschueren/vscode-ava)\n\n\n## License\n\nMIT © [Sindre Sorhus](http://sindresorhus.com)\n",
+  "readmeFilename": "readme.md",
+  "bugs": {
+    "url": "https://github.com/sindresorhus/atom-ava/issues"
+  },
+  "homepage": "https://github.com/sindresorhus/atom-ava#readme",
+  "_id": "ava@0.3.0",
+  "_shasum": "e4e9b2d2531c59e23fc50c04e8a9065a20930fd5",
+  "_resolved": "file:../d-116227-14022-lmcz5z/package.tgz",
+  "_from": "../d-116227-14022-lmcz5z/package.tgz",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [],
+    "extensions": {
+      ".json": [
+        "package.json"
+      ]
+    },
+    "folders": []
+  }
+}

@@ -16,3 +16,9 @@
 #   'ctrl-P': 'core:move-up'
 #   'ctrl-p': 'core:move-down'
 #
+
+'.autocomplete-plus input.hidden-input':
+  'enter': 'autocomplete-plus:confirm'
+
+'.workspace':
+  'ctrl-alt-o': 'node-resolver:open-selected-dependencies'

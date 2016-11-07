@@ -1,13 +1,15 @@
-'use strict';
-var path = require('path');
-var shjs = require('shelljs');
-var cli = require('jshint/src/cli');
+'use babel';
+import fs from 'fs';
+import path from 'path';
+import shjs from 'shelljs';
+import cli from 'jshint/src/cli';
+import userHome from 'user-home';
 
 // from JSHint //
 // Storage for memoized results from find file
 // Should prevent lots of directory traversal &
 // lookups when liniting an entire project
-var findFileResults = {};
+const findFileResults = {};
 
 /**
  * Searches for a file with a specified name starting with
@@ -15,33 +17,30 @@ var findFileResults = {};
  * or hits the root.
  *
  * @param {string} name filename to search for (e.g. .jshintrc)
- * @param {string} dir  directory to start search from (default:
- *                      current working directory)
+ * @param {string} dir  directory to start search from
  *
  * @returns {string} normalized filename
  */
-function findFile(name, dir) {
-  dir = dir || process.cwd();
+const findFile = (name, dir) => {
+	const filename = path.normalize(path.join(dir, name));
+	if (findFileResults[filename] !== undefined) {
+		return findFileResults[filename];
+	}
 
-  var filename = path.normalize(path.join(dir, name));
-  if (findFileResults[filename] !== undefined) {
-    return findFileResults[filename];
-  }
+	const parent = path.resolve(dir, '../');
 
-  var parent = path.resolve(dir, "../");
+	if (shjs.test('-e', filename)) {
+		findFileResults[filename] = filename;
+		return filename;
+	}
 
-  if (shjs.test("-e", filename)) {
-    findFileResults[filename] = filename;
-    return filename;
-  }
+	if (dir === parent) {
+		findFileResults[filename] = null;
+		return null;
+	}
 
-  if (dir === parent) {
-    findFileResults[filename] = null;
-    return null;
-  }
-
-  return findFile(name, parent);
-}
+	return findFile(name, parent);
+};
 
 /**
  * Tries to find a configuration file in either project directory
@@ -51,20 +50,21 @@ function findFile(name, dir) {
  * @param {string} file path to the file to be linted
  * @returns {string} a path to the config file
  */
-function findConfig(file) {
-  var dir  = path.dirname(path.resolve(file));
-  var envs = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
-  var home = path.normalize(path.join(envs, ".jshintrc"));
+const findConfig = file => {
+	const dir = path.dirname(path.resolve(file));
+	const home = path.normalize(path.join(userHome, '.jshintrc'));
 
-  var proj = findFile(".jshintrc", dir);
-  if (proj)
-    return proj;
+	const proj = findFile('.jshintrc', dir);
+	if (proj) {
+		return proj;
+	}
 
-  if (shjs.test("-e", home))
-    return home;
+	if (shjs.test('-e', home)) {
+		return home;
+	}
 
-  return null;
-}
+	return null;
+};
 
 /**
  * Tries to find JSHint configuration within a package.json file
@@ -74,23 +74,38 @@ function findConfig(file) {
  * @param   {string} file path to the file to be linted
  * @returns {object} config object
  */
-function loadNpmConfig(file) {
-  var dir = path.dirname(path.resolve(file));
-  var fp  = findFile("package.json", dir);
+const loadNpmConfig = file => {
+	const dir = path.dirname(path.resolve(file));
+	const fp = findFile('package.json', dir);
 
-  if (!fp)
-    return null;
+	if (!fp) {
+		return null;
+	}
 
-  try {
-    return require(fp).jshintConfig;
-  } catch (e) {
-    return null;
-  }
-}
+	try {
+		return require(fp).jshintConfig;
+	} catch (e) {
+		return null;
+	}
+};
 // / //
 
-module.exports = function (file) {
-	var config = loadNpmConfig(file) || cli.loadConfig(findConfig(file));
-	delete config.dirname;
+const loadConfigIfValid = filename => {
+	const strip = require('strip-json-comments');
+	try {
+		JSON.parse(strip(fs.readFileSync(filename, 'utf8')));
+		return cli.loadConfig(filename);
+	} catch (e) {
+	}
+	return {};
+};
+
+const loadConfig = file => {
+	const config = loadNpmConfig(file) || loadConfigIfValid(findConfig(file));
+	if (config && config.dirname) {
+		delete config.dirname;
+	}
 	return config;
 };
+
+export default loadConfig;

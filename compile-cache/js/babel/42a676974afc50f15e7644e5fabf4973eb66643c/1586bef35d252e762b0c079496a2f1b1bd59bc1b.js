@@ -1,0 +1,58 @@
+String.prototype.keyMatch = function (re, flags) {
+    var is_global = false,
+        results = [],
+        keys = {},
+        native_re = null,
+        str = this,
+        tmpstr = str;
+
+    if (flags === undefined) flags = '';
+
+    // find the keys inside the re, and place in mapping array {'1':'key1', '2':'key2', ...}
+    var tmpkeys = re.match(/(?!\(\?\P\<)(\w+)(?=\>)/g);
+    if (!tmpkeys) {
+        // no keys, do a regular match
+        return str.match(re);
+    } else {
+        for (var i = 0, l = tmpkeys.length; i < l; i++) {
+            keys[i] = tmpkeys[i];
+        }
+    }
+
+    // remove keys from regexp leaving standard regexp
+    native_re = re.replace(/\?\P\<\w+\>/g, '');
+
+    if (flags.indexOf('g') >= 0) is_global = true;
+    flags = flags.replace('g', '');
+
+    native_re = RegExp(native_re, flags);
+
+    do {
+        // parse string
+        var tmpmatch = tmpstr.match(native_re),
+            tmpkeymatch = {},
+            tmpsubstr = '';
+
+        if (tmpmatch) {
+            // get the entire string found
+            tmpsubstr = tmpmatch[0];
+
+            tmpkeymatch[0] = tmpsubstr;
+
+            // map them back out
+            for (var i = 1, l = tmpmatch.length; i < l; i++) {
+                tmpkeymatch[keys[i - 1]] = tmpmatch[i];
+            }
+
+            // add to results
+            results.push(tmpkeymatch);
+
+            tmpstr = tmpstr.slice(tmpstr.indexOf(tmpsubstr) + tmpsubstr.length);
+        } else {
+            tmpstr = '';
+        }
+    } while (is_global && tmpstr.length > 0); // if global loop until end of str, else do once
+
+    return results;
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9tazIvLmF0b20vcGFja2FnZXMvZG9jYmxvY2tyL2xpYi90ZXN0LmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE1BQU0sQ0FBQyxTQUFTLENBQUMsUUFBUSxHQUFHLFVBQVMsRUFBRSxFQUFFLEtBQUssRUFBQztBQUMzQyxRQUFJLFNBQVMsR0FBRyxLQUFLO1FBQ2pCLE9BQU8sR0FBRyxFQUFFO1FBQ1osSUFBSSxHQUFHLEVBQUU7UUFDVCxTQUFTLEdBQUMsSUFBSTtRQUNkLEdBQUcsR0FBRyxJQUFJO1FBQ1YsTUFBTSxHQUFHLEdBQUcsQ0FBQzs7QUFFakIsUUFBRyxLQUFLLEtBQUssU0FBUyxFQUNsQixLQUFLLEdBQUcsRUFBRSxDQUFDOzs7QUFHZixRQUFJLE9BQU8sR0FBRyxFQUFFLENBQUMsS0FBSyxDQUFDLDBCQUEwQixDQUFDLENBQUM7QUFDbkQsUUFBRyxDQUFDLE9BQU8sRUFBQzs7QUFDUixlQUFPLEdBQUcsQ0FBQyxLQUFLLENBQUMsRUFBRSxDQUFDLENBQUM7S0FDeEIsTUFDRztBQUNBLGFBQUksSUFBSSxDQUFDLEdBQUMsQ0FBQyxFQUFDLENBQUMsR0FBQyxPQUFPLENBQUMsTUFBTSxFQUFFLENBQUMsR0FBQyxDQUFDLEVBQUUsQ0FBQyxFQUFFLEVBQUM7QUFDbkMsZ0JBQUksQ0FBQyxDQUFDLENBQUMsR0FBRyxPQUFPLENBQUMsQ0FBQyxDQUFDLENBQUM7U0FDeEI7S0FDSjs7O0FBR0QsYUFBUyxHQUFHLEVBQUUsQ0FBQyxPQUFPLENBQUMsY0FBYyxFQUFDLEVBQUUsQ0FBQyxDQUFDOztBQUUxQyxRQUFHLEtBQUssQ0FBQyxPQUFPLENBQUMsR0FBRyxDQUFDLElBQUksQ0FBQyxFQUN0QixTQUFTLEdBQUcsSUFBSSxDQUFDO0FBQ3JCLFNBQUssR0FBRyxLQUFLLENBQUMsT0FBTyxDQUFDLEdBQUcsRUFBQyxFQUFFLENBQUMsQ0FBQzs7QUFFOUIsYUFBUyxHQUFHLE1BQU0sQ0FBQyxTQUFTLEVBQUUsS0FBSyxDQUFDLENBQUM7O0FBRXJDLE9BQUU7O0FBRUUsWUFBSSxRQUFRLEdBQUcsTUFBTSxDQUFDLEtBQUssQ0FBQyxTQUFTLENBQUM7WUFDbEMsV0FBVyxHQUFHLEVBQUU7WUFDaEIsU0FBUyxHQUFHLEVBQUUsQ0FBQzs7QUFFbkIsWUFBRyxRQUFRLEVBQUM7O0FBRVIscUJBQVMsR0FBRyxRQUFRLENBQUMsQ0FBQyxDQUFDLENBQUM7O0FBRXhCLHVCQUFXLENBQUMsQ0FBQyxDQUFDLEdBQUcsU0FBUyxDQUFDOzs7QUFHM0IsaUJBQUksSUFBSSxDQUFDLEdBQUMsQ0FBQyxFQUFDLENBQUMsR0FBQyxRQUFRLENBQUMsTUFBTSxFQUFFLENBQUMsR0FBQyxDQUFDLEVBQUUsQ0FBQyxFQUFFLEVBQUM7QUFDcEMsMkJBQVcsQ0FBQyxJQUFJLENBQUMsQ0FBQyxHQUFDLENBQUMsQ0FBQyxDQUFDLEdBQUcsUUFBUSxDQUFDLENBQUMsQ0FBQyxDQUFDO2FBQ3hDOzs7QUFHRCxtQkFBTyxDQUFDLElBQUksQ0FBQyxXQUFXLENBQUMsQ0FBQzs7QUFFMUIsa0JBQU0sR0FBRyxNQUFNLENBQUMsS0FBSyxDQUFHLE1BQU0sQ0FBQyxPQUFPLENBQUMsU0FBUyxDQUFDLEdBQUMsU0FBUyxDQUFDLE1BQU0sQ0FBRyxDQUFDO1NBRXpFLE1BQ0c7QUFDQSxrQkFBTSxHQUFHLEVBQUUsQ0FBQztTQUNmO0tBQ0osUUFBTyxTQUFTLElBQUksTUFBTSxDQUFDLE1BQU0sR0FBRyxDQUFDLEVBQUM7O0FBRXZDLFdBQU8sT0FBTyxDQUFDO0NBQ2xCLENBQUEiLCJmaWxlIjoiL1VzZXJzL21rMi8uYXRvbS9wYWNrYWdlcy9kb2NibG9ja3IvbGliL3Rlc3QuanMiLCJzb3VyY2VzQ29udGVudCI6WyJTdHJpbmcucHJvdG90eXBlLmtleU1hdGNoID0gZnVuY3Rpb24ocmUsIGZsYWdzKXtcbiAgICB2YXIgaXNfZ2xvYmFsID0gZmFsc2UsXG4gICAgICAgIHJlc3VsdHMgPSBbXSxcbiAgICAgICAga2V5cyA9IHt9LFxuICAgICAgICBuYXRpdmVfcmU9bnVsbCxcbiAgICAgICAgc3RyID0gdGhpcyxcbiAgICAgICAgdG1wc3RyID0gc3RyO1xuXG4gICAgaWYoZmxhZ3MgPT09IHVuZGVmaW5lZClcbiAgICAgICAgZmxhZ3MgPSBcIlwiO1xuXG4gICAgLy8gZmluZCB0aGUga2V5cyBpbnNpZGUgdGhlIHJlLCBhbmQgcGxhY2UgaW4gbWFwcGluZyBhcnJheSB7JzEnOidrZXkxJywgJzInOidrZXkyJywgLi4ufVxuICAgIHZhciB0bXBrZXlzID0gcmUubWF0Y2goLyg/IVxcKFxcP1xcUFxcPCkoXFx3KykoPz1cXD4pL2cpO1xuICAgIGlmKCF0bXBrZXlzKXsgIC8vIG5vIGtleXMsIGRvIGEgcmVndWxhciBtYXRjaFxuICAgICAgICByZXR1cm4gc3RyLm1hdGNoKHJlKTtcbiAgICB9XG4gICAgZWxzZXtcbiAgICAgICAgZm9yKHZhciBpPTAsbD10bXBrZXlzLmxlbmd0aDsgaTxsOyBpKyspe1xuICAgICAgICAgICAga2V5c1tpXSA9IHRtcGtleXNbaV07XG4gICAgICAgIH1cbiAgICB9XG5cbiAgICAvLyByZW1vdmUga2V5cyBmcm9tIHJlZ2V4cCBsZWF2aW5nIHN0YW5kYXJkIHJlZ2V4cFxuICAgIG5hdGl2ZV9yZSA9IHJlLnJlcGxhY2UoL1xcP1xcUFxcPFxcdytcXD4vZywnJyk7XG5cbiAgICBpZihmbGFncy5pbmRleE9mKCdnJykgPj0gMClcbiAgICAgICAgaXNfZ2xvYmFsID0gdHJ1ZTtcbiAgICBmbGFncyA9IGZsYWdzLnJlcGxhY2UoJ2cnLCcnKTtcblxuICAgIG5hdGl2ZV9yZSA9IFJlZ0V4cChuYXRpdmVfcmUsIGZsYWdzKTtcblxuICAgIGRve1xuICAgICAgICAvLyBwYXJzZSBzdHJpbmdcbiAgICAgICAgdmFyIHRtcG1hdGNoID0gdG1wc3RyLm1hdGNoKG5hdGl2ZV9yZSksXG4gICAgICAgICAgICB0bXBrZXltYXRjaCA9IHt9LFxuICAgICAgICAgICAgdG1wc3Vic3RyID0gXCJcIjtcblxuICAgICAgICBpZih0bXBtYXRjaCl7XG4gICAgICAgICAgICAvLyBnZXQgdGhlIGVudGlyZSBzdHJpbmcgZm91bmRcbiAgICAgICAgICAgIHRtcHN1YnN0ciA9IHRtcG1hdGNoWzBdO1xuXG4gICAgICAgICAgICB0bXBrZXltYXRjaFswXSA9IHRtcHN1YnN0cjtcblxuICAgICAgICAgICAgLy8gbWFwIHRoZW0gYmFjayBvdXRcbiAgICAgICAgICAgIGZvcih2YXIgaT0xLGw9dG1wbWF0Y2gubGVuZ3RoOyBpPGw7IGkrKyl7XG4gICAgICAgICAgICAgICAgdG1wa2V5bWF0Y2hba2V5c1tpLTFdXSA9IHRtcG1hdGNoW2ldO1xuICAgICAgICAgICAgfVxuXG4gICAgICAgICAgICAvLyBhZGQgdG8gcmVzdWx0c1xuICAgICAgICAgICAgcmVzdWx0cy5wdXNoKHRtcGtleW1hdGNoKTtcblxuICAgICAgICAgICAgdG1wc3RyID0gdG1wc3RyLnNsaWNlKCAodG1wc3RyLmluZGV4T2YodG1wc3Vic3RyKSt0bXBzdWJzdHIubGVuZ3RoKSApO1xuXG4gICAgICAgIH1cbiAgICAgICAgZWxzZXtcbiAgICAgICAgICAgIHRtcHN0ciA9IFwiXCI7XG4gICAgICAgIH1cbiAgICB9IHdoaWxlKGlzX2dsb2JhbCAmJiB0bXBzdHIubGVuZ3RoID4gMCkgLy8gaWYgZ2xvYmFsIGxvb3AgdW50aWwgZW5kIG9mIHN0ciwgZWxzZSBkbyBvbmNlXG5cbiAgICByZXR1cm4gcmVzdWx0cztcbn1cbiJdfQ==

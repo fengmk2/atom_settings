@@ -1,0 +1,28 @@
+(function() {
+  describe('Commands', function() {
+    var linter;
+    linter = null;
+    beforeEach(function() {
+      return waitsForPromise(function() {
+        return atom.packages.activatePackage('linter').then(function() {
+          return linter = atom.packages.getActivePackage('linter').mainModule.instance;
+        });
+      });
+    });
+    return describe('linter:togglePanel', function() {
+      return it('toggles the panel visibility', function() {
+        var visibility;
+        visibility = linter.views.panel.getVisibility();
+        linter.commands.togglePanel();
+        expect(linter.views.panel.getVisibility()).toBe(!visibility);
+        linter.commands.togglePanel();
+        return expect(linter.views.panel.getVisibility()).toBe(visibility);
+      });
+    });
+  });
+
+}).call(this);
+
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAiZmlsZSI6ICIiLAogICJzb3VyY2VSb290IjogIiIsCiAgInNvdXJjZXMiOiBbCiAgICAiL1VzZXJzL21rMi8uYXRvbS9wYWNrYWdlcy9saW50ZXIvc3BlYy9jb21tYW5kcy1zcGVjLmNvZmZlZSIKICBdLAogICJuYW1lcyI6IFtdLAogICJtYXBwaW5ncyI6ICJBQUFBO0FBQUEsRUFBQSxRQUFBLENBQVMsVUFBVCxFQUFxQixTQUFBLEdBQUE7QUFDbkIsUUFBQSxNQUFBO0FBQUEsSUFBQSxNQUFBLEdBQVMsSUFBVCxDQUFBO0FBQUEsSUFFQSxVQUFBLENBQVcsU0FBQSxHQUFBO2FBQ1QsZUFBQSxDQUFnQixTQUFBLEdBQUE7ZUFDZCxJQUFJLENBQUMsUUFBUSxDQUFDLGVBQWQsQ0FBOEIsUUFBOUIsQ0FBdUMsQ0FBQyxJQUF4QyxDQUE2QyxTQUFBLEdBQUE7aUJBQzNDLE1BQUEsR0FBUyxJQUFJLENBQUMsUUFBUSxDQUFDLGdCQUFkLENBQStCLFFBQS9CLENBQXdDLENBQUMsVUFBVSxDQUFDLFNBRGxCO1FBQUEsQ0FBN0MsRUFEYztNQUFBLENBQWhCLEVBRFM7SUFBQSxDQUFYLENBRkEsQ0FBQTtXQU9BLFFBQUEsQ0FBUyxvQkFBVCxFQUErQixTQUFBLEdBQUE7YUFDN0IsRUFBQSxDQUFHLDhCQUFILEVBQW1DLFNBQUEsR0FBQTtBQUNqQyxZQUFBLFVBQUE7QUFBQSxRQUFBLFVBQUEsR0FBYSxNQUFNLENBQUMsS0FBSyxDQUFDLEtBQUssQ0FBQyxhQUFuQixDQUFBLENBQWIsQ0FBQTtBQUFBLFFBQ0EsTUFBTSxDQUFDLFFBQVEsQ0FBQyxXQUFoQixDQUFBLENBREEsQ0FBQTtBQUFBLFFBRUEsTUFBQSxDQUFPLE1BQU0sQ0FBQyxLQUFLLENBQUMsS0FBSyxDQUFDLGFBQW5CLENBQUEsQ0FBUCxDQUEwQyxDQUFDLElBQTNDLENBQWdELENBQUEsVUFBaEQsQ0FGQSxDQUFBO0FBQUEsUUFHQSxNQUFNLENBQUMsUUFBUSxDQUFDLFdBQWhCLENBQUEsQ0FIQSxDQUFBO2VBSUEsTUFBQSxDQUFPLE1BQU0sQ0FBQyxLQUFLLENBQUMsS0FBSyxDQUFDLGFBQW5CLENBQUEsQ0FBUCxDQUEwQyxDQUFDLElBQTNDLENBQWdELFVBQWhELEVBTGlDO01BQUEsQ0FBbkMsRUFENkI7SUFBQSxDQUEvQixFQVJtQjtFQUFBLENBQXJCLENBQUEsQ0FBQTtBQUFBIgp9
+
+//# sourceURL=/Users/mk2/.atom/packages/linter/spec/commands-spec.coffee

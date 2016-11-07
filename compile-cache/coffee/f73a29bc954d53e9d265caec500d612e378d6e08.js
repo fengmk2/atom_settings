@@ -1,0 +1,68 @@
+(function() {
+  var FileUtil, dialog, path, remote;
+
+  remote = require("remote");
+
+  path = require("path");
+
+  dialog = remote.require("dialog");
+
+  module.exports = FileUtil = (function() {
+    function FileUtil() {}
+
+    FileUtil.prepareFile = function(buffer) {
+      if ((buffer.file != null) && buffer.file.existsSync) {
+        return FileUtil.saveIfModified(buffer);
+      } else {
+        return FileUtil.saveNewFile(buffer);
+      }
+    };
+
+    FileUtil.getPngFilePath = function(file) {
+      var filePath, pngFileName;
+      pngFileName = FileUtil.getPngFilename(file);
+      filePath = file.path.split(path.sep);
+      filePath.pop();
+      return filePath.join(path.sep) + path.sep + pngFileName;
+    };
+
+    FileUtil.saveIfModified = function(buffer) {
+      if (buffer.isModified()) {
+        buffer.save();
+      }
+      return !buffer.isModified();
+    };
+
+    FileUtil.saveNewFile = function(buffer) {
+      path = dialog.showSaveDialog({
+        options: {
+          title: 'save plantuml file'
+        }
+      });
+      if (path != null) {
+        buffer.setPath(path);
+        buffer.save();
+      }
+      return !buffer.isModified();
+    };
+
+    FileUtil.getPngFilename = function(file) {
+      var fileName, unsuffixedFileName;
+      fileName = path.basename(file.path);
+      if (fileName.indexOf('.') > -1) {
+        unsuffixedFileName = fileName.split('.');
+        unsuffixedFileName.pop();
+        fileName = unsuffixedFileName.join('.');
+      }
+      return fileName + '.png';
+    };
+
+    return FileUtil;
+
+  })();
+
+}).call(this);
+
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAiZmlsZSI6ICIiLAogICJzb3VyY2VSb290IjogIiIsCiAgInNvdXJjZXMiOiBbCiAgICAiL1VzZXJzL21rMi8uYXRvbS9wYWNrYWdlcy9wbGFudHVtbC1nZW5lcmF0b3IvbGliL2ZpbGUtdXRpbHMuY29mZmVlIgogIF0sCiAgIm5hbWVzIjogW10sCiAgIm1hcHBpbmdzIjogIkFBQUE7QUFBQSxNQUFBLDhCQUFBOztBQUFBLEVBQUEsTUFBQSxHQUFTLE9BQUEsQ0FBUSxRQUFSLENBQVQsQ0FBQTs7QUFBQSxFQUNBLElBQUEsR0FBUyxPQUFBLENBQVEsTUFBUixDQURULENBQUE7O0FBQUEsRUFFQSxNQUFBLEdBQVMsTUFBTSxDQUFDLE9BQVAsQ0FBZSxRQUFmLENBRlQsQ0FBQTs7QUFBQSxFQUlBLE1BQU0sQ0FBQyxPQUFQLEdBQ007QUFDUyxJQUFBLGtCQUFBLEdBQUEsQ0FBYjs7QUFBQSxJQUNBLFFBQUMsQ0FBQSxXQUFELEdBQWMsU0FBQyxNQUFELEdBQUE7QUFDWixNQUFBLElBQUcscUJBQUEsSUFBZ0IsTUFBTSxDQUFDLElBQUksQ0FBQyxVQUEvQjtlQUNFLFFBQVEsQ0FBQyxjQUFULENBQXdCLE1BQXhCLEVBREY7T0FBQSxNQUFBO2VBR0UsUUFBUSxDQUFDLFdBQVQsQ0FBcUIsTUFBckIsRUFIRjtPQURZO0lBQUEsQ0FEZCxDQUFBOztBQUFBLElBT0EsUUFBQyxDQUFBLGNBQUQsR0FBZ0IsU0FBQyxJQUFELEdBQUE7QUFDZCxVQUFBLHFCQUFBO0FBQUEsTUFBQSxXQUFBLEdBQWMsUUFBUSxDQUFDLGNBQVQsQ0FBd0IsSUFBeEIsQ0FBZCxDQUFBO0FBQUEsTUFDQSxRQUFBLEdBQVcsSUFBSSxDQUFDLElBQUksQ0FBQyxLQUFWLENBQWdCLElBQUksQ0FBQyxHQUFyQixDQURYLENBQUE7QUFBQSxNQUVBLFFBQVEsQ0FBQyxHQUFULENBQUEsQ0FGQSxDQUFBO2FBR0EsUUFBUSxDQUFDLElBQVQsQ0FBYyxJQUFJLENBQUMsR0FBbkIsQ0FBQSxHQUEwQixJQUFJLENBQUMsR0FBL0IsR0FBcUMsWUFKdkI7SUFBQSxDQVBoQixDQUFBOztBQUFBLElBY0EsUUFBQyxDQUFBLGNBQUQsR0FBZ0IsU0FBQyxNQUFELEdBQUE7QUFDZCxNQUFBLElBQUcsTUFBTSxDQUFDLFVBQVAsQ0FBQSxDQUFIO0FBQ0UsUUFBQSxNQUFNLENBQUMsSUFBUCxDQUFBLENBQUEsQ0FERjtPQUFBO2FBRUEsQ0FBQSxNQUFPLENBQUMsVUFBUCxDQUFBLEVBSGE7SUFBQSxDQWRoQixDQUFBOztBQUFBLElBbUJBLFFBQUMsQ0FBQSxXQUFELEdBQWEsU0FBQyxNQUFELEdBQUE7QUFDWCxNQUFBLElBQUEsR0FBTyxNQUFNLENBQUMsY0FBUCxDQUNMO0FBQUEsUUFBQyxPQUFBLEVBQVE7QUFBQSxVQUFDLEtBQUEsRUFBTSxvQkFBUDtTQUFUO09BREssQ0FBUCxDQUFBO0FBRUEsTUFBQSxJQUFHLFlBQUg7QUFDRSxRQUFBLE1BQU0sQ0FBQyxPQUFQLENBQWUsSUFBZixDQUFBLENBQUE7QUFBQSxRQUNBLE1BQU0sQ0FBQyxJQUFQLENBQUEsQ0FEQSxDQURGO09BRkE7YUFLQSxDQUFBLE1BQU8sQ0FBQyxVQUFQLENBQUEsRUFOVTtJQUFBLENBbkJiLENBQUE7O0FBQUEsSUEyQkEsUUFBQyxDQUFBLGNBQUQsR0FBZ0IsU0FBQyxJQUFELEdBQUE7QUFDZCxVQUFBLDRCQUFBO0FBQUEsTUFBQSxRQUFBLEdBQVcsSUFBSSxDQUFDLFFBQUwsQ0FBYyxJQUFJLENBQUMsSUFBbkIsQ0FBWCxDQUFBO0FBQ0EsTUFBQSxJQUFHLFFBQVEsQ0FBQyxPQUFULENBQWlCLEdBQWpCLENBQUEsR0FBd0IsQ0FBQSxDQUEzQjtBQUNFLFFBQUEsa0JBQUEsR0FBcUIsUUFBUSxDQUFDLEtBQVQsQ0FBZSxHQUFmLENBQXJCLENBQUE7QUFBQSxRQUNBLGtCQUFrQixDQUFDLEdBQW5CLENBQUEsQ0FEQSxDQUFBO0FBQUEsUUFFQSxRQUFBLEdBQVcsa0JBQWtCLENBQUMsSUFBbkIsQ0FBd0IsR0FBeEIsQ0FGWCxDQURGO09BREE7YUFLQSxRQUFBLEdBQVcsT0FORztJQUFBLENBM0JoQixDQUFBOztvQkFBQTs7TUFORixDQUFBO0FBQUEiCn0=
+
+//# sourceURL=/Users/mk2/.atom/packages/plantuml-generator/lib/file-utils.coffee
